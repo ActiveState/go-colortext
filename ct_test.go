@@ -2,32 +2,33 @@ package ct
 
 import (
 	"fmt"
+	"os"
 	"testing"
 )
 
 func TestChangeColor(t *testing.T) {
-	defer ResetColor()
+	defer ResetColor(os.Stdout)
 	fmt.Println("Normal text...")
 	text := "This is an demo of using ChangeColor to output colorful texts"
 	i := 1
 	for _, c := range text {
-		ChangeColor(Color(i/2%8)+Black, i%2 == 1, Color((i+2)/2%8)+Black, false)
+		ChangeColor(os.Stdout, Color(i/2%8)+Black, i%2 == 1, Color((i+2)/2%8)+Black, false)
 		fmt.Print(string(c))
 		i++
 	}
 	fmt.Println()
-	ChangeColor(Red, true, White, false)
+	ChangeColor(os.Stdout, Red, true, White, false)
 	fmt.Println("Before reset.")
-	ChangeColor(Red, false, White, true)
+	ChangeColor(os.Stdout, Red, false, White, true)
 	fmt.Println("Before reset.")
-	ResetColor()
+	ResetColor(os.Stdout)
 	fmt.Println("After reset.")
 	fmt.Println("After reset.")
 }
 
 func TestForeground(t *testing.T) {
-	ResetColor()
-	defer ResetColor()
+	ResetColor(os.Stdout)
+	defer ResetColor(os.Stdout)
 
 	fmt.Println("Please check the words under the following text shows with the corresponding front color:")
 
@@ -44,9 +45,9 @@ func TestForeground(t *testing.T) {
 	for i, txt := range colorToText {
 		cl := Color(i)
 		if cl != None {
-			Foreground(cl, false)
+			Foreground(os.Stdout, cl, false)
 			fmt.Print(txt, ",")
-			Foreground(cl, true)
+			Foreground(os.Stdout, cl, true)
 			fmt.Print(txt, ",")
 		}
 	}
@@ -54,8 +55,8 @@ func TestForeground(t *testing.T) {
 }
 
 func TestBackground(t *testing.T) {
-	ResetColor()
-	defer ResetColor()
+	ResetColor(os.Stdout)
+	defer ResetColor(os.Stdout)
 
 	fmt.Println("Please check the words under the following text shows with the corresponding background color:")
 
@@ -72,9 +73,9 @@ func TestBackground(t *testing.T) {
 	for i, txt := range colorToText {
 		cl := Color(i)
 		if cl != None {
-			Background(cl, false)
+			Background(os.Stdout, cl, false)
 			fmt.Print(txt, ",")
-			Background(cl, true)
+			Background(os.Stdout, cl, true)
 			fmt.Print(txt, ",")
 		}
 	}

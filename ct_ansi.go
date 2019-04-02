@@ -4,6 +4,7 @@ package ct
 
 import (
 	"fmt"
+	"io"
 	"os"
 	"strconv"
 )
@@ -12,11 +13,11 @@ func isDumbTerm() bool {
 	return os.Getenv("TERM") == "dumb"
 }
 
-func resetColor() {
+func resetColor(writer io.Writer) {
 	if isDumbTerm() {
 		return
 	}
-	fmt.Fprint(Writer, "\x1b[0m")
+	fmt.Fprint(writer, "\x1b[0m")
 }
 
 func ansiText(fg Color, fgBright bool, bg Color, bgBright bool) string {
@@ -40,12 +41,12 @@ func ansiText(fg Color, fgBright bool, bg Color, bgBright bool) string {
 	return string(s)
 }
 
-func changeColor(fg Color, fgBright bool, bg Color, bgBright bool) {
+func changeColor(writer io.Writer, fg Color, fgBright bool, bg Color, bgBright bool) {
 	if isDumbTerm() {
 		return
 	}
 	if fg == None && bg == None {
 		return
 	}
-	fmt.Fprint(Writer, ansiText(fg, fgBright, bg, bgBright))
+	fmt.Fprint(writer, ansiText(fg, fgBright, bg, bgBright))
 }

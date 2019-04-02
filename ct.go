@@ -7,7 +7,6 @@ package ct
 
 import (
 	"io"
-	"os"
 )
 
 // Color is the type of color to be set.
@@ -26,28 +25,25 @@ const (
 	White
 )
 
-// Writer is the io.Writer where ANSI escape codes will be written to
-var Writer io.Writer = os.Stdout
-
 // ResetColor resets the foreground and background to original colors
-func ResetColor() {
-	resetColor()
+func ResetColor(writer io.Writer) {
+	resetColor(writer)
 }
 
 // ChangeColor sets the foreground and background colors. If the value of the color is None,
 // the corresponding color keeps unchanged.
 // If fgBright or bgBright is set true, corresponding color use bright color. bgBright may be
 // ignored in some OS environment.
-func ChangeColor(fg Color, fgBright bool, bg Color, bgBright bool) {
-	changeColor(fg, fgBright, bg, bgBright)
+func ChangeColor(writer io.Writer, fg Color, fgBright bool, bg Color, bgBright bool) {
+	changeColor(writer, fg, fgBright, bg, bgBright)
 }
 
 // Foreground changes the foreground color.
-func Foreground(cl Color, bright bool) {
-	ChangeColor(cl, bright, None, false)
+func Foreground(writer io.Writer, cl Color, bright bool) {
+	ChangeColor(writer, cl, bright, None, false)
 }
 
 // Background changes the background color.
-func Background(cl Color, bright bool) {
-	ChangeColor(None, false, cl, bright)
+func Background(writer io.Writer, cl Color, bright bool) {
+	ChangeColor(writer, None, false, cl, bright)
 }

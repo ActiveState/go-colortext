@@ -3,6 +3,7 @@
 package ct
 
 import (
+	"io"
 	"syscall"
 	"unsafe"
 )
@@ -101,14 +102,14 @@ func init() {
 	syscall.LoadDLL("")
 }
 
-func resetColor() {
+func resetColor(writer io.Writer) {
 	if initScreenInfo == nil { // No console info - Ex: stdout redirection
 		return
 	}
 	setConsoleTextAttribute(hStdout, initScreenInfo.WAttributes)
 }
 
-func changeColor(fg Color, fgBright bool, bg Color, bgBright bool) {
+func changeColor(writer io.Writer, fg Color, fgBright bool, bg Color, bgBright bool) {
 	attr := uint16(0)
 	if fg == None || bg == None {
 		cbufinfo := getConsoleScreenBufferInfo(hStdout)
