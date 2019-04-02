@@ -102,7 +102,7 @@ func init() {
 	syscall.LoadDLL("")
 }
 
-func resetColor(writer io.Writer) {
+func reset(writer io.Writer) {
 	if initScreenInfo == nil { // No console info - Ex: stdout redirection
 		return
 	}
@@ -131,4 +131,8 @@ func changeColor(writer io.Writer, fg Color, fgBright bool, bg Color, bgBright b
 		}
 	}
 	setConsoleTextAttribute(hStdout, attr)
+}
+
+func changeStyle(writer io.Writer, styles ...Style) {
+	// unsupported on windows
 }

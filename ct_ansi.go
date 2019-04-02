@@ -13,7 +13,7 @@ func isDumbTerm() bool {
 	return os.Getenv("TERM") == "dumb"
 }
 
-func resetColor(writer io.Writer) {
+func reset(writer io.Writer) {
 	if isDumbTerm() {
 		return
 	}
@@ -39,6 +39,19 @@ func ansiText(fg Color, fgBright bool, bg Color, bgBright bool) string {
 	}
 	s = append(s, "m"...)
 	return string(s)
+}
+
+func changeStyle(writer io.Writer, styles ...Style) {
+	for _, style := range styles {
+		switch style {
+		case Bold:
+			fmt.Fprint(writer, "\x1b[1m")
+			break
+		case Underline:
+			fmt.Fprint(writer, "\x1b[4m")
+			break
+		}
+	}
 }
 
 func changeColor(writer io.Writer, fg Color, fgBright bool, bg Color, bgBright bool) {

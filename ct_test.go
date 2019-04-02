@@ -7,7 +7,7 @@ import (
 )
 
 func TestChangeColor(t *testing.T) {
-	defer ResetColor(os.Stdout)
+	defer Reset(os.Stdout)
 	fmt.Println("Normal text...")
 	text := "This is an demo of using ChangeColor to output colorful texts"
 	i := 1
@@ -21,14 +21,35 @@ func TestChangeColor(t *testing.T) {
 	fmt.Println("Before reset.")
 	ChangeColor(os.Stdout, Red, false, White, true)
 	fmt.Println("Before reset.")
-	ResetColor(os.Stdout)
+	Reset(os.Stdout)
 	fmt.Println("After reset.")
 	fmt.Println("After reset.")
 }
 
+func TestChangeStyle(t *testing.T) {
+	defer Reset(os.Stdout)
+	fmt.Println("Normal text...")
+	fmt.Println()
+
+	ChangeStyle(os.Stdout, Bold)
+	fmt.Println("Bold, not underlined")
+	Reset(os.Stdout)
+	fmt.Println("Reset")
+
+	ChangeStyle(os.Stdout, Underline)
+	fmt.Println("Underlined, not bold")
+	Reset(os.Stdout)
+	fmt.Println("Reset")
+
+	ChangeStyle(os.Stdout, Underline, Bold)
+	fmt.Println("Underlined, Bold")
+	Reset(os.Stdout)
+	fmt.Println("Reset")
+}
+
 func TestForeground(t *testing.T) {
-	ResetColor(os.Stdout)
-	defer ResetColor(os.Stdout)
+	Reset(os.Stdout)
+	defer Reset(os.Stdout)
 
 	fmt.Println("Please check the words under the following text shows with the corresponding front color:")
 
@@ -55,8 +76,8 @@ func TestForeground(t *testing.T) {
 }
 
 func TestBackground(t *testing.T) {
-	ResetColor(os.Stdout)
-	defer ResetColor(os.Stdout)
+	Reset(os.Stdout)
+	defer Reset(os.Stdout)
 
 	fmt.Println("Please check the words under the following text shows with the corresponding background color:")
 

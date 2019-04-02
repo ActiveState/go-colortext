@@ -25,9 +25,17 @@ const (
 	White
 )
 
-// ResetColor resets the foreground and background to original colors
-func ResetColor(writer io.Writer) {
-	resetColor(writer)
+// Style is the type of style to be set.
+type Style int
+
+const (
+	Bold Style = iota
+	Underline
+)
+
+// Reset resets the foreground, background and style
+func Reset(writer io.Writer) {
+	reset(writer)
 }
 
 // ChangeColor sets the foreground and background colors. If the value of the color is None,
@@ -46,4 +54,9 @@ func Foreground(writer io.Writer, cl Color, bright bool) {
 // Background changes the background color.
 func Background(writer io.Writer, cl Color, bright bool) {
 	ChangeColor(writer, None, false, cl, bright)
+}
+
+// ChangeStyle changes the style of printed text
+func ChangeStyle(writer io.Writer, styles ...Style) {
+	changeStyle(writer, styles...)
 }
